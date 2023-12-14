@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import Numbers from './Numbers'
+import Phonebook from './Phonebook';
+import Form from './Form';
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -45,37 +47,11 @@ const App = () => {
 
   return (
     <div>
-      <h2>Phonebook</h2>
-      <form onSubmit={showFiltered}>
-        <div>
-          filter shown with: <input onChange={handleSearch}/>
-        </div>
-      </form>
-
-      <h2>add a new</h2>
-      <form onSubmit={addNote}>
-        <div>
-          name: <input onChange={handleNoteChange}/>
-        </div>
-        <div>
-          number: <input onChange={handleNumberChange}/>
-        </div>
-        <div>
-          <button type="submit" onClick={addNote}>add</button>
-        </div>
-      </form>
-
-      <Numbers persons={persons}/>
+      <Phonebook onChange={handleSearch} onSubmit={showFiltered}/>
+      <Form addNote={addNote} handleNoteChange={handleNoteChange} handleNumberChange={handleNumberChange} />
       <Numbers persons={visiblePersons}/>
     </div>
   )
 }
 
 export default App
-// Also removes onSubmit={addNote} from the <div/> around the input form.
-
-// The examples on the course page has value={newNote} in the <input> component.
-// However, it seems to work fine without it. I am not sure what that does.
-  //const newNote = (event) => {
-  //  setNewName(event.target.value);
-  //}
