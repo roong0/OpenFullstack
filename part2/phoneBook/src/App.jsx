@@ -3,10 +3,16 @@ import Numbers from './Numbers'
 
 const App = () => {
   const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number:'0123456' }
+    { name: 'Arto Hellas', number: '040-123456', id: 1 },
+    { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
+    { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
+    { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
   ]) 
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
+  const [newPerson, setNewPerson] = useState('');
+
+  const [visiblePersons, setVisitblePersons] = useState(persons);
 
 
   const addNote = (event) => {
@@ -19,18 +25,34 @@ const App = () => {
     } 
   }
 
-
   const handleNoteChange = (event) => {
     setNewName(event.target.value)
   }
   const handleNumberChange = (event) => {
-    console.log(event.target.value);
     setNewNumber(event.target.value);
   }
-   
+  const handleSearch = (event) => {
+    setNewPerson(event.target.value);
+  }
+
+  const showFiltered = (event) => {
+    event.preventDefault(); // Otherwise page refreshes by default.
+    // Will not show if a persons is added after the filter already done.
+    let peeps = persons;
+    peeps = peeps.filter((x)=>x.name.toLowerCase().includes(newPerson.toLowerCase()));
+    setVisitblePersons(peeps);
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
+      <form onSubmit={showFiltered}>
+        <div>
+          filter shown with: <input onChange={handleSearch}/>
+        </div>
+      </form>
+
+      <h2>add a new</h2>
       <form onSubmit={addNote}>
         <div>
           name: <input onChange={handleNoteChange}/>
@@ -44,6 +66,7 @@ const App = () => {
       </form>
 
       <Numbers persons={persons}/>
+      <Numbers persons={visiblePersons}/>
     </div>
   )
 }
