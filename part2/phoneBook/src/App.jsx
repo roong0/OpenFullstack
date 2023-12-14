@@ -10,7 +10,12 @@ const App = () => {
 
   const addNote = (event) => {
     event.preventDefault();
-    setPersons(persons.concat({name:newName}));//Can't use push as modifies OG array
+    if (persons.filter(e=>e.name === newName).length > 0) {
+      alert(`${newName} is already added to phonebook`);
+    } else {
+      setPersons(persons.concat({name:newName}));
+    }
+    
   }
 
   const handleNoteChange = (event) => {
