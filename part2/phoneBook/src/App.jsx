@@ -14,7 +14,7 @@ const App = () => {
     if (persons.filter(e=>e.name === newName).length > 0) {
       alert(`${newName} is already added to phonebook`);
     } else {
-      // Doesnt check for valid phonenumber input
+      // Doesnt check for valid phonenumber input 
       setPersons(persons.concat({name:newName, number:newNumber}));
     } 
   }
