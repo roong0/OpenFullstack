@@ -4,6 +4,8 @@ import Phonebook from './Phonebook';
 import Form from './Form';
 import axios from 'axios';
 
+import noteService from './services/notes';
+
 const App = () => {
   const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('');
@@ -19,12 +21,12 @@ const App = () => {
       alert(`${newName} is already added to phonebook`);
     } else {
       // Doesnt check for valid phonenumber input
-      axios
-        .post('http://localhost:3001/persons', {name:newName, number:newNumber})
-        .then(response => {
-          setPersons(persons.concat(response.data))
+      noteService
+        .create({name:newName, number:newNumber})
+        .then(returnedNote => {
+          setPersons(persons.concat(returnedNote))
           setNewPerson('')
-          setVisitblePersons(persons.concat(response.data))
+          setVisitblePersons(persons.concat(returnedNote))
         })
     }
   }
@@ -47,14 +49,11 @@ const App = () => {
     setVisitblePersons(peeps);
   }
   useEffect(() => {
-    console.log('effect')
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        console.log('promise fulfilled');
-        setPersons(response.data);
-        //Assumes all visible for first render(Cant set it to persons as it renders only does this some time in the future)
-        setVisitblePersons(response.data);
+    noteService
+      .getAll()
+      .then(allPersons => {
+        setPersons(allPersons);
+        setVisitblePersons(allPersons);
       })
   }, [])
 
