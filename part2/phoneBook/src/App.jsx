@@ -18,9 +18,15 @@ const App = () => {
     if (persons.filter(e=>e.name === newName).length > 0) {
       alert(`${newName} is already added to phonebook`);
     } else {
-      // Doesnt check for valid phonenumber input 
-      setPersons(persons.concat({name:newName, number:newNumber}));
-    } 
+      // Doesnt check for valid phonenumber input
+      axios
+        .post('http://localhost:3001/persons', {name:newName, number:newNumber})
+        .then(response => {
+          setPersons(persons.concat(response.data))
+          setNewPerson('')
+          setVisitblePersons(persons.concat(response.data))
+        })
+    }
   }
 
   const handleNoteChange = (event) => {
